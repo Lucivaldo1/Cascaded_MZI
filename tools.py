@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from scipy.constants import c
 
 '''
@@ -121,48 +122,152 @@ def getLpi(wavelength_center, neff):
     return Lpi
 
 
-def MZILatticefilter(icApi, neff, ng, L, delayLengths, k, name, nLattice):
-
+def getKappa(icApi,nmbrofpoints, startFrequency, stopFrequency, Lstart, Lstop, step):
+    '''
+    this funciont is used to calculate the coupling coefficient of siepic pdk device
+    via interconnect utilizing optical power meters
+    :param icApi: interconnect api object
+    units of each parameter:
+    [wg_width] = um
+    [gap] = um
+    [radius] = um
+    '''
     icApi.switchtolayout()
-    # Adding and positioning the dcs and wgs
-    for i in range(nLattice):
-        icApi.addelement('Waveguide Coupler')
-        name_dc = f'dc{i + 1}'
-        icApi.set('name', name_dc)
-        icApi.setposition(name_dc, 400 + 400 * i, 100)
-        icApi.set('coupling coefficient 1', k[i])
+    icApi.addelement('ebeam_dc_te1550')
+    icApi.set('name','dc')
+    icApi.setposition('dc', 25, 200)
+    ##ona##
+    icApi.addelement('Optical Network Analyzer')
+    icApi.set('name', 'benchmark ona')
+    icApi.setposition('benchmark ona', 0, 0)
+    icApi.set('number of input ports', 2)
+    icApi.set('input parameter', 2)
+    icApi.set('start frequency', startFrequency)
+    icApi.set('stop frequency', stopFrequency)
+    icApi.set('number of points', nmbrofpoints)
+    ##
 
-    for i in range((nLattice-1)*2):
-        icApi.addelement('Straight Waveguide')
-        name_wg = f'wg{i + 1}'
-        icApi.set('name', name_wg)
-        icApi.set('effective index 1', neff)
-        icApi.set('group index 1', ng)
+    #adding the optical power meters
+    for i in range(3):
+        icApi.addelement('Optical Power Meter')
+        name = f'optical power meter {i+1}'
+        icApi.set('name', name)
+        icApi.setposition(name, 300, 200*i)
+    #connections
+    icApi.connect('benchmark ona', 'output', 'dc', 'opt_1')
+    icApi.connect('benchmark ona', 'output', 'optical power meter 1', 'input')
 
-        if i % 2 == 0:
-            compr = L
-        else:
-            idx = i // 2
-            compr = delayLengths[idx]
-        icApi.set('length', compr)
+    icApi.connect('dc', 'opt_3', 'optical power meter 2', 'input')
+    icApi.connect('dc', 'opt_3', 'benchmark ona', 'input 1')
 
-        grupo = i // 2
+    icApi.connect('dc', 'opt_4', 'optical power meter 3', 'input')
+    icApi.connect('dc', 'opt_4', 'benchmark ona', 'input 2')
+    outputsOna = []
+    kappa = []
+    LC_values = np.arange(Lstart,Lstop,step)
+    for i in range(len(LC_values)):
+        icApi.switchtolayout()
+        icApi.select('dc')
+        icApi.set('coupling_length', LC_values[i])
+        icApi.run()
+        xdB = icApi.getresult('optical power meter 3', 'sum/power')
+        kappa.append(10**(xdB/10))
+        outputsOna.append(icApi.getresult('benchmark ona', 'input 2/mode 1/gain'))
+    ##dataframe to show the results
 
-        x = 600 + 400 * grupo
+    df = pd.DataFrame(
+        {
+            'Coupling Length (um)': LC_values/1e-6,
+            'Coupling Coefficient (dB)': kappa,
+        }
+    )
+    ## deleting
+    icApi.switchtolayout()
+    icApi.select('benchmark ona')
+    for i in range(3):
+        icApi.shiftselect(f'optical power meter {i+1}')
+    icApi.shiftselect('dc')
+    icApi.delete()
 
-        y = 60 if i % 2 == 0 else 160
+    return df, outputsOna
 
-        icApi.setposition(name_wg, x, y)
+def MZILatticefilter(icApi, neff, ng, L, delayLengths, k,LC,filenames, name, nLattice, toggle):
 
-    # connecting em all together
-    for i in range(nLattice-1):
-        # dcs to wgs
-        icApi.connect(f'dc{i + 1}', 'port 3', f'wg{2 * i + 1}', 'port 1')
-        icApi.connect(f'dc{i + 1}', 'port 4', f'wg{2 * i + 2}', 'port 1')
-        # wgs to dcs
-        icApi.connect(f'wg{2 * i + 1}', 'port 2', f'dc{i + 2}', 'port 1', )
-        icApi.connect(f'wg{2 * i + 2}', 'port 2', f'dc{i + 2}', 'port 2', )
+    #toggle: 1 for ideal device, 2 for pdk and 3 for s-parameters device
+    if (toggle == 1 or toggle == 2):
+        if (toggle == 1):
+            dc_name = 'Waveguide Coupler'
+            wg_name = 'Straight Waveguide'
+            portName = 'port '
+        elif (toggle == 2):
+            dc_name = 'ebeam_dc_te1550'
+            wg_name = 'ebeam_wg_integral_1550'
+            portName = 'opt_'
+        icApi.switchtolayout()
+        # Adding and positioning the dcs and wgs
+        for i in range(nLattice):
+            icApi.addelement(dc_name)
+            name_dc = f'dc{i + 1}'
+            icApi.set('name', name_dc)
+            icApi.setposition(name_dc, 400 + 400 * i, 100)
+            if (toggle ==1):
+                icApi.set('coupling coefficient 1', k[i])
+            elif (toggle == 2):
+                icApi.set('coupling_length', LC[i])
+    if (toggle == 3):
+        wg_name = 'ebeam_wg_integral_1550'
+        portName = 'port '
+    #S parameters device
+    if (toggle == 3):
+        for i in range(nLattice):
+            icApi.addelement('Optical N Port S-Parameter')
+            icApi.set('load from file',1)
+            icApi.set('s parameters filename', filenames[i])
+            name_dc = f'dc{i + 1}'
+            icApi.set('name', name_dc)
+            icApi.setposition(name_dc, 400 + 400 * i, 100)
+    lengths = []
 
+    for i in range(0, len(delayLengths), 2):
+        lengths.extend([
+            L,
+            delayLengths[i],
+            delayLengths[i + 1],
+        ])
+    if (toggle == 1 or toggle == 2 or toggle == 3):
+        for i in range((nLattice-1)*2):
+            icApi.addelement(wg_name)
+            name_wg = f'wg{i + 1}'
+            icApi.set('name', name_wg)
+            if (toggle == 1):
+                icApi.set('effective index 1', neff)
+                icApi.set('group index 1', ng)
+                icApi.set('length', lengths[i])
+            elif (toggle == 2 or toggle == 3):
+                icApi.set('wg_length', lengths[i])
+            grupo = i // 2
+            x = 600 + 400 * grupo
+            y = 60 if i % 2 == 0 else 160
+            icApi.setposition(name_wg, x, y)
+
+    if (toggle == 1 or toggle == 2):
+        # connecting em all together
+        for i in range(nLattice-1):
+            # dcs to wgs
+            icApi.connect(f'dc{i + 1}', f'{portName}3', f'wg{2 * i + 1}', 'port 1')
+            icApi.connect(f'dc{i + 1}', f'{portName}4', f'wg{2 * i + 2}', 'port 1')
+            # wgs to dcs
+            icApi.connect(f'wg{2 * i + 1}', 'port 2', f'dc{i + 2}', f'{portName}1', )
+            icApi.connect(f'wg{2 * i + 2}', 'port 2', f'dc{i + 2}', f'{portName}2', )
+    elif (toggle == 3):
+        # connecting em all together
+        for i in range(nLattice-1):
+            # dcs to wgs
+            icApi.connect(f'dc{i + 1}', f'{portName}2', f'wg{2 * i + 1}', 'port 1')
+            icApi.connect(f'dc{i + 1}', f'{portName}4', f'wg{2 * i + 2}', 'port 1')
+            # wgs to dcs
+            icApi.connect(f'wg{2 * i + 1}', 'port 2', f'dc{i + 2}', f'{portName}1', )
+            icApi.connect(f'wg{2 * i + 2}', 'port 2', f'dc{i + 2}', f'{portName}3', )
     # criando compound element
     icApi.select('dc1')
     for i in range(1, nLattice+1, 1):
@@ -180,10 +285,16 @@ def MZILatticefilter(icApi, neff, ng, L, delayLengths, k, name, nLattice):
     icApi.addport(name, 'port 4', 'Bidirectional', 'Optical Signal', 'Right', 0.75)
 
     icApi.groupscope(name)
-    icApi.connect('RELAY_1', 'port', 'dc1', 'port 1')
-    icApi.connect('RELAY_2', 'port', 'dc1', 'port 2')
-    icApi.connect('RELAY_3', 'port', f'dc{nLattice}', 'port 3')
-    icApi.connect('RELAY_4', 'port', f'dc{nLattice}', 'port 4')
+    if (toggle == 1 or toggle == 2):
+        icApi.connect('RELAY_1', 'port', 'dc1', f'{portName}1')
+        icApi.connect('RELAY_2', 'port', 'dc1', f'{portName}2')
+        icApi.connect('RELAY_3', 'port', f'dc{nLattice}', f'{portName}3')
+        icApi.connect('RELAY_4', 'port', f'dc{nLattice}', f'{portName}4')
+    elif(toggle == 3):
+        icApi.connect('RELAY_1', 'port', 'dc1', f'{portName}1')
+        icApi.connect('RELAY_2', 'port', 'dc1', f'{portName}3')
+        icApi.connect('RELAY_3', 'port', f'dc{nLattice}', f'{portName}2')
+        icApi.connect('RELAY_4', 'port', f'dc{nLattice}', f'{portName}4')
 
     icApi.refresh()
     return 0
@@ -199,25 +310,24 @@ def MZILatticefilterPDK(icApi, L, delayLengths, LC, name, nLattice):
         icApi.setposition(name_dc, 400 + 400 * i, 100)
         icApi.set('coupling_length', LC[i])
 
+    lengths = []
+
+    for i in range(0, len(delayLengths), 2):
+        lengths.extend([
+            L,
+            delayLengths[i],
+            delayLengths[i + 1],
+        ])
+
     for i in range((nLattice-1)*2):
         icApi.addelement('ebeam_wg_integral_1550')
         name_wg = f'wg{i + 1}'
         icApi.set('name', name_wg)
+        icApi.set('wg_length', lengths[i])
 
-        if i % 2 == 0:
-            compr = L
-        else:
-            # i=1→idx=0, i=3→idx=1, i=5→idx=2, i=7→idx=3
-            idx = i // 2
-            compr = delayLengths[idx]
-        icApi.set('wg_length', compr)
-
-        grupo = i // 2  # 0…3
-
+        grupo = i // 2
         x = 600 + 400 * grupo
-
         y = 60 if i % 2 == 0 else 160
-
         icApi.setposition(name_wg, x, y)
 
     # connecting em all together
