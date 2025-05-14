@@ -8,7 +8,7 @@ Devices:
     - -63.0
     polarization: TE
     sequences:
-    - Test1(wavelength_sweep_ida)
+    - test1(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDMMZIOUTPUT2:
     device_id: Lucivaldo_CWDMMZIOUTPUT2
@@ -19,7 +19,7 @@ Devices:
     - -191.0
     polarization: TE
     sequences:
-    - Test1(wavelength_sweep_ida)
+    - test1(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDMMZIOUTPUT3:
     device_id: Lucivaldo_CWDMMZIOUTPUT3
@@ -30,7 +30,7 @@ Devices:
     - 63.0
     polarization: TE
     sequences:
-    - Test2(wavelength_sweep_ida)
+    - test2(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDMMZIOUTPUT4:
     device_id: Lucivaldo_CWDMMZIOUTPUT4
@@ -41,7 +41,7 @@ Devices:
     - 63.0
     polarization: TE
     sequences:
-    - Test3(wavelength_sweep_ida)
+    - test3(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDMMZIOUTPUT5:
     device_id: Lucivaldo_CWDMMZIOUTPUT5
@@ -52,7 +52,7 @@ Devices:
     - -63.0
     polarization: TE
     sequences:
-    - Test2(wavelength_sweep_ida)
+    - test2(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDMMZIOUTPUT6:
     device_id: Lucivaldo_CWDMMZIOUTPUT6
@@ -63,7 +63,7 @@ Devices:
     - -63.0
     polarization: TE
     sequences:
-    - Test3(wavelength_sweep_ida)
+    - test3(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDMMZIOUTPUT7:
     device_id: Lucivaldo_CWDMMZIOUTPUT7
@@ -74,7 +74,7 @@ Devices:
     - -191.0
     polarization: TE
     sequences:
-    - Test2(wavelength_sweep_ida)
+    - test2(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDMMZIOUTPUT8:
     device_id: Lucivaldo_CWDMMZIOUTPUT8
@@ -85,7 +85,7 @@ Devices:
     - -191.0
     polarization: TE
     sequences:
-    - Test3(wavelength_sweep_ida)
+    - test3(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDM_MZI_INPUT1:
     device_id: Lucivaldo_CWDM_MZI_INPUT1
@@ -96,7 +96,7 @@ Devices:
     - 191.0
     polarization: TE
     sequences:
-    - Test1(wavelength_sweep_ida)
+    - test1(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDM_MZI_INPUT2:
     device_id: Lucivaldo_CWDM_MZI_INPUT2
@@ -107,7 +107,7 @@ Devices:
     - 191.0
     polarization: TE
     sequences:
-    - Test2(wavelength_sweep_ida)
+    - test2(wavelength_sweep_ida)
     wavelength: '1550'
   Lucivaldo_CWDM_MZI_INPUT3:
     device_id: Lucivaldo_CWDM_MZI_INPUT3
@@ -118,10 +118,10 @@ Devices:
     - 191.0
     polarization: TE
     sequences:
-    - Test3(wavelength_sweep_ida)
+    - test3(wavelength_sweep_ida)
     wavelength: '1550'
 Sequences:
-  Test1(wavelength_sweep_ida):
+  test1(wavelength_sweep_ida):
     Runtime: 8.75
     results_info:
       csv: 'True'
@@ -152,7 +152,7 @@ Sequences:
       Stop: '1565'
       Sweep Speed: auto
       Upper Limit: '0'
-  Test2(wavelength_sweep_ida):
+  test2(wavelength_sweep_ida):
     Runtime: 8.75
     results_info:
       csv: 'True'
@@ -183,7 +183,7 @@ Sequences:
       Stop: '1565'
       Sweep Speed: auto
       Upper Limit: '0'
-  Test3(wavelength_sweep_ida):
+  test3(wavelength_sweep_ida):
     Runtime: 8.75
     results_info:
       csv: 'True'
