@@ -1,0 +1,216 @@
+Devices:
+  Lucivaldo_CWDMMZIOUTPUT1:
+    device_id: Lucivaldo_CWDMMZIOUTPUT1
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - -312.0
+    - -63.0
+    polarization: TE
+    sequences:
+    - Test1(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDMMZIOUTPUT2:
+    device_id: Lucivaldo_CWDMMZIOUTPUT2
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - -312.0
+    - -191.0
+    polarization: TE
+    sequences:
+    - Test1(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDMMZIOUTPUT3:
+    device_id: Lucivaldo_CWDMMZIOUTPUT3
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - 157.0
+    - 63.0
+    polarization: TE
+    sequences:
+    - Test2(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDMMZIOUTPUT4:
+    device_id: Lucivaldo_CWDMMZIOUTPUT4
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - 217.0
+    - 63.0
+    polarization: TE
+    sequences:
+    - Test3(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDMMZIOUTPUT5:
+    device_id: Lucivaldo_CWDMMZIOUTPUT5
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - 157.0
+    - -63.0
+    polarization: TE
+    sequences:
+    - Test2(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDMMZIOUTPUT6:
+    device_id: Lucivaldo_CWDMMZIOUTPUT6
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - 217.0
+    - -63.0
+    polarization: TE
+    sequences:
+    - Test3(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDMMZIOUTPUT7:
+    device_id: Lucivaldo_CWDMMZIOUTPUT7
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - 157.0
+    - -191.0
+    polarization: TE
+    sequences:
+    - Test2(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDMMZIOUTPUT8:
+    device_id: Lucivaldo_CWDMMZIOUTPUT8
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - 217.0
+    - -191.0
+    polarization: TE
+    sequences:
+    - Test3(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDM_MZI_INPUT1:
+    device_id: Lucivaldo_CWDM_MZI_INPUT1
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - -312.0
+    - 191.0
+    polarization: TE
+    sequences:
+    - Test1(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDM_MZI_INPUT2:
+    device_id: Lucivaldo_CWDM_MZI_INPUT2
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - 157.0
+    - 191.0
+    polarization: TE
+    sequences:
+    - Test2(wavelength_sweep_ida)
+    wavelength: '1550'
+  Lucivaldo_CWDM_MZI_INPUT3:
+    device_id: Lucivaldo_CWDM_MZI_INPUT3
+    device_type: openEBL
+    electricalCoordinates: []
+    opticalCoordinates:
+    - 217.0
+    - 191.0
+    polarization: TE
+    sequences:
+    - Test3(wavelength_sweep_ida)
+    wavelength: '1550'
+Sequences:
+  Test1(wavelength_sweep_ida):
+    Runtime: 8.75
+    results_info:
+      csv: 'True'
+      foldername: ''
+      legend: 'True'
+      mat: 'True'
+      num_plots: '1'
+      pdf: 'True'
+      pkl: 'False'
+      plottitle: WavelengthSweep
+      save_location: ''
+      saveplot: 'True'
+      visual: 'True'
+      xscale: '1'
+      xtitle: Wavelength (nm)
+      yscale: '1'
+      ytitle: Power (dBm)
+    variables:
+      Initialrange: '-20'
+      Laser Output: High Power
+      Mode: CONT
+      Numscans: '1'
+      Power: '1'
+      Power Unit: dBm
+      RangeDec: '20'
+      Start: '1530'
+      Step: '0.01'
+      Stop: '1565'
+      Sweep Speed: auto
+      Upper Limit: '0'
+  Test2(wavelength_sweep_ida):
+    Runtime: 8.75
+    results_info:
+      csv: 'True'
+      foldername: ''
+      legend: 'True'
+      mat: 'True'
+      num_plots: '1'
+      pdf: 'True'
+      pkl: 'False'
+      plottitle: WavelengthSweep
+      save_location: ''
+      saveplot: 'True'
+      visual: 'True'
+      xscale: '1'
+      xtitle: Wavelength (nm)
+      yscale: '1'
+      ytitle: Power (dBm)
+    variables:
+      Initialrange: '-20'
+      Laser Output: High Power
+      Mode: CONT
+      Numscans: '1'
+      Power: '1'
+      Power Unit: dBm
+      RangeDec: '20'
+      Start: '1530'
+      Step: '0.01'
+      Stop: '1565'
+      Sweep Speed: auto
+      Upper Limit: '0'
+  Test3(wavelength_sweep_ida):
+    Runtime: 8.75
+    results_info:
+      csv: 'True'
+      foldername: ''
+      legend: 'True'
+      mat: 'True'
+      num_plots: '1'
+      pdf: 'True'
+      pkl: 'False'
+      plottitle: WavelengthSweep
+      save_location: ''
+      saveplot: 'True'
+      visual: 'True'
+      xscale: '1'
+      xtitle: Wavelength (nm)
+      yscale: '1'
+      ytitle: Power (dBm)
+    variables:
+      Initialrange: '-20'
+      Laser Output: High Power
+      Mode: CONT
+      Numscans: '1'
+      Power: '1'
+      Power Unit: dBm
+      RangeDec: '20'
+      Start: '1530'
+      Step: '0.01'
+      Stop: '1565'
+      Sweep Speed: auto
+      Upper Limit: '0'
