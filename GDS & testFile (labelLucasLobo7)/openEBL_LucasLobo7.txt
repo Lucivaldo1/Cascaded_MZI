@@ -1,7 +1,5 @@
 % X-coord, Y-coord, Polarization, wavelength, type, deviceID, params 
--312, 189, TE, 1550, openEBL, LucasLobo7, MZICWDM
-157, 189, TE, 1550, openEBL, LucasLobo7, MZICWDM1
-217, 189, TE, 1550, openEBL, LucasLobo7, MZICWDM2
+-293, 63, TE, 1550, openEBL, LucasLobo7, comment
 
 % X-coord, Y-coord, deviceID, padName, params 
 
