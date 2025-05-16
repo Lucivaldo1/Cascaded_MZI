@@ -5,7 +5,7 @@ Devices:
     electricalCoordinates: []
     opticalCoordinates:
     - -312.0
-    - 62.0
+    - 189.0
     polarization: TE
     sequences:
     - Test1(wavelength_sweep_ida)
@@ -16,7 +16,7 @@ Devices:
     electricalCoordinates: []
     opticalCoordinates:
     - 157.0
-    - 62.0
+    - 189.0
     polarization: TE
     sequences:
     - Test2(wavelength_sweep_ida)
@@ -27,7 +27,7 @@ Devices:
     electricalCoordinates: []
     opticalCoordinates:
     - 217.0
-    - 62.0
+    - 189.0
     polarization: TE
     sequences:
     - Test3(wavelength_sweep_ida)
